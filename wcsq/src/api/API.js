@@ -19,5 +19,25 @@ class API {
 		return axios.post(`${baseUrl}/checkenroll`, param , config);
 	}
 	
+	/* 显示首页热帖排行列表 */
+	getPlus () {
+		return axios.get(`${baseUrl}/getplus` , config);
+	}
+
+	getBbsPlus () {
+		return axios.get(`${baseUrl}/getbbsplus`, config);
+	}
+
+	getPlusByPage(param) {
+		return axios.post(`${baseUrl}/getplusbypage`, param , config);
+	}
+
+	publishPlus(param) {
+		return axios.post(`${baseUrl}/publishplus`, param , config);
+	}
+
+	getGoods() {
+		return axios.get(`${baseUrl}/getgoods`, config);
+	}
 }
 export default API;

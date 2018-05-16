@@ -5,32 +5,9 @@
 </template>
 
 <script>
-  import {
-    getStore
-  } from '../src/utils/utils'
-  import API from './api/API'
-  const api = new API();
   export default {
     name: 'App',
-    created: function () {
-      // 判定是否有用户缓存
-      if (getStore('data')) {
-        var UserForm = JSON.parse(getStore('data'));
-        api.checkLogin(UserForm).then((res) => {
-          if (JSON.parse(res.data).enableLogin) {
-            this.$notify({
-              title: '提示',
-              message: '当前已有用户登录信息',
-              type: 'success',
-              position: 'bottom-right'
-            });
-            this.$store.state.islogin = true;
-          }
-        })
-      }
-    }
   }
-
 </script>
 
 <style>

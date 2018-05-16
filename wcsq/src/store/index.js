@@ -9,10 +9,19 @@ export default new Vuex.Store({
         // shopcar : shopcar
     },
     state:{
-        islogin: false
+        islogin: false,
+        user: {
+            mobile: null,
+            name: null,
+            head_src: null
+        },
+        hasNotify: false,
+        ActiveView: '1'
     },
     mutations: {
-
+        hasLogin: function(state) {
+            state.islogin = true;
+        }
     },
     actions: {
 

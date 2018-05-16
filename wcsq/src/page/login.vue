@@ -24,9 +24,9 @@
         <div class="login-ui">
           <p class="title">用户登录</p>
           <el-form :rules="loginRules" :model="loginForm" ref="loginForm">
-            <el-form-item prop="user">
+            <el-form-item prop="mobile">
               <div class="group">
-                <el-input placeholder="请输入您的手机号" class="ipt" type="text" v-model="loginForm.user"></el-input>
+                <el-input placeholder="请输入您的手机号" class="ipt" type="text" v-model="loginForm.mobile"></el-input>
                 <i class="user"></i>
               </div>
             </el-form-item>
@@ -51,9 +51,9 @@
         <div class="login-ui">
           <p class="title">用户注册</p>
           <el-form :rules="enrollRules" :model="enrollForm" ref="enrollForm">
-            <el-form-item prop="user">
+            <el-form-item prop="mobile">
               <div class="group">
-                <el-input placeholder="请输入您的注册手机号" class="ipt" type="text" v-model="enrollForm.user"></el-input>
+                <el-input placeholder="请输入您的注册手机号" class="ipt" type="text" v-model="enrollForm.mobile"></el-input>
                 <i class="user"></i>
               </div>
             </el-form-item>
@@ -139,11 +139,11 @@
         arrCode: ['bubw', 'mauw', '4wj4', '17en', 'ayur', 'jb75', '7hpn', 'wvq3'],
         random: null,
         loginForm: {
-          user: '13660449184',
+          mobile: '13660449184',
           password: '123456'
         },
         loginRules: {
-          user: [{
+          mobile: [{
             required: true,
             message: '请输入账号',
             trigger: 'blur'
@@ -163,7 +163,7 @@
           ]
         },
         enrollForm: {
-          user: '13660449184',
+          mobile: '13660449184',
           password: '123456'
         },
         otherForm: {
@@ -171,7 +171,7 @@
           confirm: ''
         },
         enrollRules: {
-          user: [{
+          mobile: [{
             required: true,
             message: '请输入账号',
             trigger: 'blur'
@@ -213,6 +213,12 @@
                     that.$store.state.islogin = true;
                     that.isLoadingEnroll = false;
                     setStore('data', JSON.stringify(EnrollForm));
+                    that.$router.push({ path: '/'});
+                  }else {
+                     that.$message({
+                      message: '该手机号码已被注册!',
+                      type: 'error'
+                    });
                   }
                 }).catch((err) => {
                   consoloe.log(err);
@@ -245,7 +251,7 @@
                   message: '登录成功!',
                   type: 'success'
                 });
-                that.$store.state.islogin = true;
+                that.$store.commit('hasLogin');
                 that.isLoadingLogin = false;
                 setStore('data', JSON.stringify(LoginForm));
                 that.$router.push({ path: '/'});

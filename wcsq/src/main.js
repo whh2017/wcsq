@@ -30,7 +30,13 @@ router.beforeEach((to, from, next) => {
   next()
 });
 
+import Vuelazyload from 'vue-lazyload'
+Vue.use(Vuelazyload, {
+  loading: require('../static/load.gif')
+})
+
 Vue.config.productionTip = false
+
 
 /* eslint-disable no-new */
 new Vue({

@@ -3,16 +3,25 @@
     <div class="bg">
       <div class="user">
         <div class="box">
-          <template v-if="this.$store.state.islogin">
+          <template v-if="islogin">
             <el-dropdown class="message" placement="bottom-end">
               <span class="el-dropdown-link">
-                <img src="../assets/local/mafeifei.jpg">
-                <span>用户13660449184</span>
+                <img :src="user.head_src">
+                <template v-if=" user.name === null">
+                  <span>用户
+                    <em>{{ user.mobile }}</em>
+                  </span>
+                </template>
+                <template v-else>
+                  <span>{{ user.name }}</span>
+                </template>
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown" class="user-drop">
                 <el-dropdown-item>个人中心</el-dropdown-item>
-                <el-dropdown-item>退出登录</el-dropdown-item>
+                <el-dropdown-item>
+                  <p @click="clearLogin">退出登录</p>
+                </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -23,8 +32,10 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown" class="user-drop">
-                <el-dropdown-item><router-link to="/login">注册</router-link></el-dropdown-item>
-                <el-dropdown-item><router-link to="/login">登录</router-link></el-dropdown-item>
+                <el-dropdown-item>
+                  <router-link to="/login">注册/登录</router-link>
+                </el-dropdown-item>
+                <!-- <el-dropdown-item><router-link to="/login">登录</router-link></el-dropdown-item> -->
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -34,19 +45,19 @@
         <div class="logo img-box fl">
           <img src="../assets/common/logo.png">
         </div>
-        <el-menu :default-active="ActiveView" class="el-menu-demo fr" mode="horizontal" background-color="#c06d77" text-color="#fff"
+        <el-menu router :default-active="$route.path" class="el-menu-demo fr" mode="horizontal" background-color="#c06d77" text-color="#fff"
           active-text-color="#ffe400">
-          <el-menu-item index="1">
-            <router-link to="/test">围诚社区</router-link>
+          <el-menu-item index="/">
+            围诚社区
           </el-menu-item>
-          <el-menu-item index="2">
-            <router-link to="/test">围诚Plus</router-link>
+          <el-menu-item index="/bbs">
+            围诚Plus
           </el-menu-item>
-          <el-menu-item index="3">
-            <router-link to="/test">围诚三天</router-link>
+          <el-menu-item index="/sale">
+            围诚三天
           </el-menu-item>
-          <el-menu-item index="4">
-            <router-link to="/test">我的围诚</router-link>
+          <el-menu-item index="/test">
+            我的围诚
           </el-menu-item>
         </el-menu>
       </div>
@@ -54,11 +65,62 @@
   </div>
 </template>
 <script>
+  import {
+    removeStore,
+    getStore
+  } from '../utils/utils'
+  import {
+    mapState
+  } from 'vuex'
+  import API from '../api/API'
+  const api = new API();
   export default {
     data() {
       return {
-        ActiveView: '1'
+
       }
+    },
+    computed: {
+      ...mapState([
+        'user', 'islogin'
+      ])
+    },
+    created: function () {
+      // 判定是否有用户缓存
+      if (getStore('data')) {
+        var UserForm = JSON.parse(getStore('data'));
+        api.checkLogin(UserForm).then((res) => {
+          var data = JSON.parse(res.data);
+          if (data.enableLogin) {
+            if (!this.$store.state.hasNotify) {
+              this.$notify({
+                title: '当前提示',
+                message: '已登录',
+                type: 'success',
+                position: 'bottom-right'
+              });
+              this.$store.commit('hasLogin');
+              this.$store.state.user = data.user;
+              this.$store.state.hasNotify = true;
+            }
+          }
+        })
+      }
+    },
+    methods: {
+      clearLogin: function () {
+        this.$confirm('即将退出登录（需重新登录），是否继续？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          removeStore('data');
+          window.location.reload();
+        });
+      }
+      // changeView: function(data) {
+      //   this.$store.state.ActiveView = data;
+      // }
     }
   }
 
@@ -80,6 +142,10 @@
   .wc-header .bg {
     position: relative;
     background: #c06d77;
+  }
+
+  .wc-header li a {
+    display: block;
   }
 
   .wc-header .user {

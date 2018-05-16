@@ -14,7 +14,6 @@ export default{
 
 	transformResponse: [
 		function(data) {
-
 			return data;
 		}
 	],

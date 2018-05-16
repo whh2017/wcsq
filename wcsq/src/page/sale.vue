@@ -1,19 +1,19 @@
 <template>
   <div>
     <header-bar></header-bar>
-    <index-content></index-content>
+    <sale-content></sale-content>
     <footer-bar></footer-bar>
   </div>
 </template>
 
 <script>
   import HeaderBar from '../components/Header'
-  import IndexContent from '../components/IndexContent'
+  import SaleContent from '../components/SaleContent.vue'
   import FooterBar from '../components/Footer'
   export default {
     components: {
       HeaderBar,
-      IndexContent,
+      SaleContent,
       FooterBar
     }
   }
