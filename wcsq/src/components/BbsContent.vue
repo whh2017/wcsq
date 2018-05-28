@@ -10,7 +10,7 @@
             </el-select>
           </div>
           <div class="fr">
-            <el-button plain icon="el-icon-edit" type="info" class="report" @click="publishPlusDialogVisible = true;">发表新主题</el-button>
+            <el-button plain icon="el-icon-edit" type="info" class="report" @click="publishNew">发表新主题</el-button>
           </div>
         </div>
         <ul class="content">
@@ -87,7 +87,8 @@
         <transition name="el-fade-in-linear">
           <el-form-item label="上传图片" class="upload-img" v-show="uploadImg">
             <el-upload :data="publishContent" ref="upload" :auto-upload="false" action="https://jsonplaceholder.typicode.com/posts/"
-              list-type="picture-card" :on-preview="handlePictureCardPreview" :on-change="uploadChange" :on-remove="uploadRemove">
+              list-type="picture-card" :on-preview="handlePictureCardPreview" :on-change="uploadChange" :on-remove="uploadRemove"
+              :on-success="uploadSuccess">
               <i class="el-icon-plus"></i>
             </el-upload>
           </el-form-item>
@@ -161,17 +162,27 @@
       //   this.plusGroups = JSON.parse(res.data).data;
       // });
       api.getPlusByPage(1).then((res) => {
-          this.plusGroups = JSON.parse(res.data).data;
-        }).catch((error) => {
+        this.plusGroups = JSON.parse(res.data).data;
+      }).catch((error) => {
 
-        });
+      });
     },
     computed: {
       ...mapState([
-        'user'
+        'user', 'islogin'
       ])
     },
     methods: {
+      publishNew: function () {
+        if (this.islogin) {
+          this.publishPlusDialogVisible = true;
+        } else {
+          this.$message({
+            message: '请先登录！',
+            type: 'warning'
+          });
+        }
+      },
       uploadChange: function (file, fileList) {
         var isRepeat;
         if (fileList.length >= 2) {
@@ -198,6 +209,13 @@
           this.publishForm.hasImg = false;
         }
       },
+      uploadSuccess: function (response, file, fileList) {
+        this.$message({
+          message: '发布Plus动态成功!',
+          type: 'success'
+        });
+        this.publishPlusDialogVisible = false;
+      },
       handlePictureCardPreview: function (file) {
         this.dialogImageUrl = file.url;
         this.uploadVisible = true;
@@ -222,6 +240,12 @@
                   this.$message({
                     message: '发布Plus动态成功!',
                     type: 'success'
+                  });
+                  this.publishPlusDialogVisible = false;
+                  api.getPlusByPage(1).then((res) => {
+                    this.plusGroups = JSON.parse(res.data).data;
+                  }).catch((error) => {
+
                   });
                 }
               });

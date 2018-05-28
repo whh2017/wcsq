@@ -14,7 +14,7 @@
               <p class="description">
                 <span>交易地点：{{ item.loc }}</span>
                 <br>
-                <span>交易时间：{{ item.time }}</span>
+                <span>发布时间：{{ item.time }}</span>
               </p>
               <router-link :to="{ path: item.link, query:{id: item.id}}">
                 <el-button type="success" plain icon="el-icon-search">查看详情</el-button>
@@ -23,20 +23,24 @@
           </div>
         </li>
       </ul>
-      <el-button icon="el-icon-plus" class="getmore" :loading="goodsLoading" @click="getMore">加载更多</el-button>
+      <!-- <el-button icon="el-icon-plus" class="getmore" :loading="goodsLoading" @click="getMore">刷新并加载更多</el-button> -->
     </div>
     <div class="report">
       <el-button type="primary" icon="el-icon-edit" @click="reportGoods">发起物品转让</el-button>
     </div>
+   <self-support></self-support>
+
+
   </div>
 </template>
 
 <script>
+  import selfSupport from '../components/selfSupport.vue'
   import API from '../api/API'
   const api = new API();
   export default {
     components: {
-
+      selfSupport
     },
     data() {
       return {

@@ -10,7 +10,7 @@
   }
 </script>
 
-<style>
+<style lang="scss">
   /*reset*/
 
   body,
@@ -109,7 +109,7 @@
     background: #f4f4f4;
     font-family: "微软雅黑";
   }
-
+  
   a {
     color: #7e7e7e;
     text-decoration: none;

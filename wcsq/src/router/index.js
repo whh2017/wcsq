@@ -5,6 +5,8 @@ import WcIndex from '@/page/index'
 import WcLogin from '@/page/login'
 import WcBbs from '@/page/bbs'
 import WcSale from '@/page/sale'
+import WcCenter from '@/page/center'
+import SaleDetail from '@/page/saleDetail'
 Vue.use(Router)
 
 export default new Router({
@@ -33,6 +35,16 @@ export default new Router({
       path: '/sale',
       name: 'WcSale',
       component: WcSale
+    },
+    {
+      path: '/center',
+      name: 'WcCenter',
+      component: WcCenter
+    },
+    {
+      path: '/goods',
+      name: 'SaleDetail',
+      component: SaleDetail
     }
 
   ]

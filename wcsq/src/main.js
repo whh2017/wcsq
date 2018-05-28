@@ -22,11 +22,11 @@ import { getStore,removeStore } from './utils/utils'
 /* 路由卫士 */
 router.beforeEach((to, from, next) => {
   let user = JSON.parse(getStore('data'));
-  // if (!user && to.path != '/login') {
-  //   next({ path: '/login' })
-  // } else {
-  //   next()
-  // }
+  if (!user && to.path == '/center') {
+    next({ path: '/login' })
+  } else {
+    next()
+  }
   next()
 });
 

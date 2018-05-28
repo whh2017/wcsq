@@ -39,5 +39,29 @@ class API {
 	getGoods() {
 		return axios.get(`${baseUrl}/getgoods`, config);
 	}
+
+	getUser(param) {
+		return axios.post(`${baseUrl}/getuser`, param , config);
+	}
+
+	submitUserForm(param) {
+		return axios.post(`${baseUrl}/submituserform`, param , config);
+	}
+
+	isCorrect(param) {
+		return axios.post(`${baseUrl}/iscorrect`, param , config);
+	}
+
+	submitPassword(param) {
+		return axios.post(`${baseUrl}/submitpassword`, param , config);
+	}
+
+	getSelfGoods() {
+		return axios.get(`${baseUrl}/getselfgoods` , config);
+	}
+	
+	getGoodDetail(param) {
+		return axios.post(`${baseUrl}/getgooddetail`, param , config);
+	}
 }
 export default API;

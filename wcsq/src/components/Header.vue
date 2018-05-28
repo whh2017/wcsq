@@ -1,5 +1,8 @@
 <template>
   <div class="wc-header">
+    <div class="go-top">
+      <el-button type="warning" icon="el-icon-arrow-up" circle size="medium" @click="gotop"></el-button>
+    </div>
     <div class="bg">
       <div class="user">
         <div class="box">
@@ -18,7 +21,6 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown" class="user-drop">
-                <el-dropdown-item>个人中心</el-dropdown-item>
                 <el-dropdown-item>
                   <p @click="clearLogin">退出登录</p>
                 </el-dropdown-item>
@@ -56,7 +58,7 @@
           <el-menu-item index="/sale">
             围诚三天
           </el-menu-item>
-          <el-menu-item index="/test">
+          <el-menu-item index="/center">
             我的围诚
           </el-menu-item>
         </el-menu>
@@ -106,6 +108,23 @@
           }
         })
       }
+      Math.easeout = function (A, B, rate, callback) {
+        if (A == B || typeof A != 'number') {
+          return;
+        }
+        B = B || 0;
+        rate = rate || 2;
+        var step = function () {
+          A = A + (B - A) / rate;
+          if (A < 1) {
+            callback(B, true);
+            return;
+          }
+          callback(A, false);
+          requestAnimationFrame(step);
+        };
+        step();
+      };
     },
     methods: {
       clearLogin: function () {
@@ -117,6 +136,12 @@
           removeStore('data');
           window.location.reload();
         });
+      },
+      gotop: function () {
+        var doc = document.body.scrollTop ? document.body : document.documentElement;
+        Math.easeout(doc.scrollTop, 0, 4, function (value) {
+          doc.scrollTop = value;
+        });
       }
       // changeView: function(data) {
       //   this.$store.state.ActiveView = data;
@@ -125,10 +150,45 @@
   }
 
 </script>
-<style>
-  .user-drop {
-    top: 60px !important;
+<style lang="scss">
+  @mixin button {
+    font-size: 20px;
   }
+
+  @mixin rounded-corners {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+  }
+
+  notice {
+    background-color: green;
+    border: 2px solid #00aa00;
+    @include rounded-corners;
+  }
+
+  article a {
+    color: blue;
+    &:hover {
+      color: red
+    }
+  }
+
+  .go-top {
+    position: fixed;
+    right: 40px;
+    bottom: 200px;
+    z-index: 999;
+  }
+
+  /* .user-drop {
+    top: 60px !important;
+    li {
+        padding: 0 30px;
+        color: #fff;
+        text-align: center;
+    }
+  } */
 
   .user-drop li {
     padding: 0 30px;
@@ -171,11 +231,15 @@
     color: #409EFF;
     font-size: 18px;
     text-align: center;
-  }
-
-  .wc-header .box span {
-    color: #fff;
-    margin-left: 5px;
+  } // .wc-header .box span {
+  //   color: #fff;
+  //   margin-left: 5px;
+  // }
+  .wc-header .box {
+    span {
+      color: #fff;
+      margin-left: 5px;
+    }
   }
 
   .wc-header .logo {
