@@ -5,7 +5,7 @@
     </h2>
     <div class="content">
       <ul class="clearfix">
-        <li v-for="item in GoodsList" :id="item.id">
+        <li v-for="(item, index) in GoodsList" :id="item.id" :key="index">
           <div class="box">
             <img v-lazy="item.src">
             <div class="box-content">
@@ -90,6 +90,7 @@
     position: fixed;
     right: 20px;
     top: 300px;
+    z-index: 15;
   }
 
   .wc-sale h2.tt {

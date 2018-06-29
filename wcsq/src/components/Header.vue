@@ -1,67 +1,74 @@
 <template>
-  <div class="wc-header">
-    <div class="go-top">
-      <el-button type="warning" icon="el-icon-arrow-up" circle size="medium" @click="gotop"></el-button>
-    </div>
-    <div class="bg">
-      <div class="user">
-        <div class="box">
-          <template v-if="islogin">
-            <el-dropdown class="message" placement="bottom-end">
-              <span class="el-dropdown-link">
-                <img :src="user.head_src">
-                <template v-if=" user.name === null">
-                  <span>用户
-                    <em>{{ user.mobile }}</em>
-                  </span>
-                </template>
-                <template v-else>
-                  <span>{{ user.name }}</span>
-                </template>
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu slot="dropdown" class="user-drop">
-                <el-dropdown-item>
-                  <p @click="clearLogin">退出登录</p>
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </template>
-          <template v-else>
-            <el-dropdown class="message" placement="bottom-end">
-              <span class="el-dropdown-link">
-                <img src="../assets/local/init.jpg">
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu slot="dropdown" class="user-drop">
-                <el-dropdown-item>
-                  <router-link to="/login">注册/登录</router-link>
-                </el-dropdown-item>
-                <!-- <el-dropdown-item><router-link to="/login">登录</router-link></el-dropdown-item> -->
-              </el-dropdown-menu>
-            </el-dropdown>
-          </template>
-        </div>
+  <div style="height: 80px;">
+    <div class="wc-header">
+      <div class="go-top">
+        <el-button type="warning" icon="el-icon-arrow-up" circle size="medium" @click="gotop"></el-button>
       </div>
-      <div class="layout clearfix">
-        <div class="logo img-box fl">
-          <img src="../assets/common/logo.png">
+      <div class="bg">
+        <div class="user">
+          <div class="box">
+            <template v-if="islogin">
+              <el-dropdown class="message" placement="bottom-end">
+                <span class="el-dropdown-link">
+                  <img :src="user.head_src">
+                  <template v-if=" user.name === null">
+                    <span>用户
+                      <em>{{ user.mobile }}</em>
+                    </span>
+                  </template>
+                  <template v-else>
+                    <span>{{ user.name }}</span>
+                  </template>
+                  <i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown" class="user-drop">
+                  <el-dropdown-item>
+                    <el-badge :value="shopcar.count">
+                     <p>我的购物车</p>
+                    </el-badge>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <p @click="clearLogin">退出登录</p>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </template>
+            <template v-else>
+              <el-dropdown class="message" placement="bottom-end">
+                <span class="el-dropdown-link">
+                  <img src="../assets/local/init.jpg">
+                  <i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown" class="user-drop">
+                  <el-dropdown-item>
+                    <router-link to="/login">注册/登录</router-link>
+                  </el-dropdown-item>
+                  <!-- <el-dropdown-item><router-link to="/login">登录</router-link></el-dropdown-item> -->
+                </el-dropdown-menu>
+              </el-dropdown>
+            </template>
+          </div>
         </div>
-        <el-menu router :default-active="$route.path" class="el-menu-demo fr" mode="horizontal" background-color="#c06d77" text-color="#fff"
-          active-text-color="#ffe400">
-          <el-menu-item index="/">
-            围诚社区
-          </el-menu-item>
-          <el-menu-item index="/bbs">
-            围诚Plus
-          </el-menu-item>
-          <el-menu-item index="/sale">
-            围诚三天
-          </el-menu-item>
-          <el-menu-item index="/center">
-            我的围诚
-          </el-menu-item>
-        </el-menu>
+        <div class="layout clearfix">
+          <div class="logo img-box fl">
+            <img src="../assets/common/logo.png">
+          </div>
+          <el-menu router :default-active="$route.path" class="el-menu-demo fr" mode="horizontal" background-color="#c06d77" text-color="#fff"
+            active-text-color="#ffe400">
+            <el-menu-item index="/">
+              围诚社区
+            </el-menu-item>
+            <el-menu-item index="/bbs">
+              围诚Plus
+            </el-menu-item>
+            <el-menu-item index="/sale">
+              围诚三天
+            </el-menu-item>
+            <el-menu-item index="/center">
+              我的围诚
+            </el-menu-item>
+          </el-menu>
+        </div>
       </div>
     </div>
   </div>
@@ -79,12 +86,12 @@
   export default {
     data() {
       return {
-
+        allcount: 1
       }
     },
     computed: {
       ...mapState([
-        'user', 'islogin'
+        'user', 'islogin','shopcar'
       ])
     },
     created: function () {
@@ -102,6 +109,7 @@
                 position: 'bottom-right'
               });
               this.$store.commit('hasLogin');
+              this.$store.commit('hadAddLoc');
               this.$store.state.user = data.user;
               this.$store.state.hasNotify = true;
             }
@@ -199,6 +207,14 @@
     display: block;
   }
 
+  .wc-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+  }
+
   .wc-header .bg {
     position: relative;
     background: #c06d77;
@@ -261,7 +277,16 @@
   }
 
   .wc-header .el-menu-demo {
-    margin-right: 50px;
+    margin-right: 100px;
   }
 
+  .user-drop .el-badge__content.is-fixed{
+    top: 2px;
+  }
+
+  .user-drop .el-badge__content{
+    font-size: 14px;
+    height: 20px;
+    line-height: 20px;
+  }
 </style>

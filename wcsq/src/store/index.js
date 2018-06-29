@@ -3,17 +3,19 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex);
 
-// import shopcar from './modules/shopcar'
+import shopcar from './modules/shopcar'
 export default new Vuex.Store({
     modules: {
-        // shopcar : shopcar
+        shopcar : shopcar
     },
     state:{
+        hadAddLoc: false,
         islogin: false,
         user: {
             mobile: null,
             name: null,
-            head_src: null
+            head_src: null,
+            hadAddLoc: true
         },
         hasNotify: false,
         ActiveView: '1'
@@ -21,6 +23,9 @@ export default new Vuex.Store({
     mutations: {
         hasLogin: function(state) {
             state.islogin = true;
+        },
+        hadAddLoc: function(state) {
+            state.hadAddLoc = true;
         }
     },
     actions: {

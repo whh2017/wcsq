@@ -11,7 +11,7 @@
       <div class="focus fl">
         <h2>今日推荐</h2>
         <ul>
-          <li v-for="item in focusGroups">
+          <li v-for="(item, index) in focusGroups" :key="index">
             <router-link :to="item.href">{{ item.title }}</router-link>
           </li>
         </ul>
@@ -24,7 +24,7 @@
             <router-link to="/test">更多>></router-link>
           </h2>
           <ul>
-            <li class="clearfix" v-for="(item ,index) in plusGroups">
+            <li class="clearfix" v-for="(item ,index) in plusGroups" :key="index">
               <em class="fl">{{ ++index }}</em>
               <router-link :to="item.href" class="fl">{{ item.title }}</router-link>
             </li>

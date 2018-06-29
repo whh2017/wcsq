@@ -115,7 +115,7 @@
   export default {
     created: function () {
       this.userFormLoading = true;
-      api.getUser(this.user.mobile).then((res) => {
+      api.getUser(this.user.mobile).then(res => {
         this.userForm = JSON.parse(res.data).user;
         this.editUserForm = this.userForm;
         this.userFormLoading = false;
@@ -123,7 +123,7 @@
     },
     data() {
       var validatePassword = (rule, value, callback) => {
-        api.isCorrect(this.passwordForm.originpd).then((res) => {
+        api.isCorrect(this.passwordForm.originpd).then(res => {
           if (JSON.parse(res.data).flag) {
             callback();
           } else {

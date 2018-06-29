@@ -63,5 +63,22 @@ class API {
 	getGoodDetail(param) {
 		return axios.post(`${baseUrl}/getgooddetail`, param , config);
 	}
+
+	getAddressList(param) {
+		return axios.post(`${baseUrl}/getaddresslist` , param , config);
+	}
+
+	addAddressList(param) {
+		return axios.post(`${baseUrl}/addaddresslist`, param , config);
+	}
+
+	editAddressList(param) {
+		return axios.post(`${baseUrl}/editaddresslist`, param , config);	
+	}
+
+	removeAddress(param) {
+		return axios.post(`${baseUrl}/removeaddress`, param , config);	
+	}
+	
 }
 export default API;

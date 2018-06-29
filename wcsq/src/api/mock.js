@@ -138,5 +138,28 @@ export default function () {
     "price":Random.integer(100, 499)
   });
   
+  Mock.mock(`${baseUrl}/getaddresslist`, {
+    "data": Array(2).fill(1).map(() => {
+      return {
+        addressId: Random.increment(),
+        name: Random.cname(),
+        phone: Random.natural(13660449184, 13660449190),
+        // part: Random.city(),
+        address: Random.county(true)
+      }
+    })
+  });
 
+  Mock.mock(`${baseUrl}/addaddresslist`, {
+    flag: true
+  });
+
+  Mock.mock(`${baseUrl}/editaddresslist`, {
+    flag: true
+  });
+
+  Mock.mock(`${baseUrl}/removeaddress`, {
+    flag: true
+  });
+  
 }

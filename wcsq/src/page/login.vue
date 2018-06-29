@@ -213,7 +213,10 @@
                     that.$store.state.islogin = true;
                     that.isLoadingEnroll = false;
                     setStore('data', JSON.stringify(EnrollForm));
-                    that.$router.push({ path: '/'});
+                    console.log(that.$router);
+                    // that.$router.push({ path: '/'});
+                    that.$router.back(-1);
+
                   }else {
                      that.$message({
                       message: '该手机号码已被注册!',
@@ -254,7 +257,10 @@
                 that.$store.commit('hasLogin');
                 that.isLoadingLogin = false;
                 setStore('data', JSON.stringify(LoginForm));
-                that.$router.push({ path: '/'});
+                // that.$router.push({ path: '/'});
+                //  console.log(that.$router);
+                 that.$router.back(-1);
+                 
               }
             })
           }

@@ -14,7 +14,7 @@
           </div>
         </div>
         <ul class="content">
-          <li class="clearfix" v-for="(item , index) in plusGroups">
+          <li class="clearfix" v-for="(item , index) in plusGroups" :key="index">
             <div class="icon fl">
               <img v-lazy="item.head_src">
             </div>
@@ -161,7 +161,7 @@
       // api.getBbsPlus().then((res) => {
       //   this.plusGroups = JSON.parse(res.data).data;
       // });
-      api.getPlusByPage(1).then((res) => {
+      api.getPlusByPage(1).then(res => {
         this.plusGroups = JSON.parse(res.data).data;
       }).catch((error) => {
 

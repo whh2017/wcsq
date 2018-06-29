@@ -19,6 +19,10 @@ import store from './store/index'
 /* 引入浏览器缓存封装插件 */
 import { getStore,removeStore } from './utils/utils'
 
+/* 引入地址联动插件 */
+import VueAreaLinkage from 'vue-area-linkage';
+Vue.use(VueAreaLinkage)
+
 /* 路由卫士 */
 router.beforeEach((to, from, next) => {
   let user = JSON.parse(getStore('data'));
@@ -27,6 +31,9 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
+  // if( to.path == from.path) {
+  //   next({ path: '/' })
+  // }
   next()
 });
 
