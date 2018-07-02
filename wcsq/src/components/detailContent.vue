@@ -168,11 +168,12 @@
             }
           }, 1000)
         } else {
-          this.$message({
-            message: '请先登录！',
-            type: 'info'
-          });
-          this.$router.push({ path: '/login'});
+          // this.$message({
+          //   message: '请先登录！',
+          //   type: 'info'
+          // });
+          // this.$router.push({ path: '/login'});
+          this.$router.push({ path:'/login' , query:{ redirect: this.$route.fullPath} })
         }
       },
       hadPay: function () {

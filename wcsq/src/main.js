@@ -27,13 +27,10 @@ Vue.use(VueAreaLinkage)
 router.beforeEach((to, from, next) => {
   let user = JSON.parse(getStore('data'));
   if (!user && to.path == '/center') {
-    next({ path: '/login' })
+    next({ path:'/login' , query:{ redirect: to.fullPath} })
   } else {
     next()
   }
-  // if( to.path == from.path) {
-  //   next({ path: '/' })
-  // }
   next()
 });
 

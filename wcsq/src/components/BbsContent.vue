@@ -177,9 +177,15 @@
         if (this.islogin) {
           this.publishPlusDialogVisible = true;
         } else {
-          this.$message({
-            message: '请先登录！',
-            type: 'warning'
+          this.$confirm('请先登录', '登录提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'info'
+          }).then(() => {
+            // this.$router.push({
+            //   path: '/login'
+            // });
+            this.$router.push({ path:'/login' , query:{ redirect: this.$route.fullPath}});
           });
         }
       },

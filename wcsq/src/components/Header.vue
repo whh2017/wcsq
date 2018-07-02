@@ -41,7 +41,7 @@
                 </span>
                 <el-dropdown-menu slot="dropdown" class="user-drop">
                   <el-dropdown-item>
-                    <router-link to="/login">注册/登录</router-link>
+                    <div @click="startLogin">注册/登录</div>
                   </el-dropdown-item>
                   <!-- <el-dropdown-item><router-link to="/login">登录</router-link></el-dropdown-item> -->
                 </el-dropdown-menu>
@@ -135,6 +135,9 @@
       };
     },
     methods: {
+      startLogin: function() {
+        this.$router.push({ path:'/login' , query:{ redirect: this.$route.fullPath}});
+      },
       clearLogin: function () {
         this.$confirm('即将退出登录（需重新登录），是否继续？', '提示', {
           confirmButtonText: '确定',

@@ -14,7 +14,7 @@
             <div class="price">
               <div class="operate clearfix">
                 <router-link class="look fl" :to="{path:'/goods',query:{id : item.id}}">查看详情</router-link>
-                <input type="button" class="join fl" value="加入购物车" @click="joinShopCar(item.pic,$event)">
+                <input type="button" class="join fl" value="加入购物车" @click="joinShopCar(item,$event)">
               </div>
               <p>
                 <span>￥</span>{{ item.price }}
@@ -56,33 +56,32 @@
       outerWrapper = this.addElements(CLASSNAME_OUTER, CLASSNAME_INNER);
       endLeft = this.getEndCoordinate(document.getElementById('ttt'))[0];
       endTop = this.getEndCoordinate(document.getElementById('ttt'))[1];
-
       api.getSelfGoods().then((res) => {
         this.goods = JSON.parse(res.data).data;
       });
     },
     computed: {
-      ...mapMutations([
-        'addThings'
-      ]),
       ...mapState([
-        'user'
+        'user', 'islogin'
       ])
     },
     methods: {
+      ...mapMutations([
+        'addThings', 'bb'
+      ]),
       _addThing: function(id, price, name, pic) {
         this.addThings({
           productId: id,
           salePrice: price,
           productName: name,
           productImg: pic
-        })
+        });
       },
       addElements: function(CLASSNAME_OUTER, CLASSNAME_INNER) {
         var outerWrapper = document.createElement('div');
         var outer = null;
         var inner = null;
-        for (var i = 0; i < 1; i++) {
+        for (var i = 0; i < 5; i++) {
           outer = document.createElement('div');
           outer.classList.add(CLASSNAME_OUTER);
           outer.classList.add('point-pre');
@@ -109,40 +108,50 @@
         result = childElements[0];
         return result;
       },
-      joinShopCar: function(pic,event) {
-        // 当双击的时候,小球会从(0,0)的位置落入目标区,以下为当双击的时候,只会第一次点击的setTimeout会被清除
-        // 所以只会显示一次从点击地点到目标区的运动
-        // 但是依然会执行第一次的逻辑,因为内部两个setTimeout没有被清除
-        var that = this;
-        clearTimeout(timer);
-        var timer = setTimeout(function() {
-          var left = event.pageX;
-          var top = event.pageY;
-          // 定位球元素
-          var childElement = that.getElementMyShowHide(outerWrapper, 'point-pre');
-          childElement.style.left = left + 'px';
-          childElement.style.top = top + 'px';
-          // 计算坐标差
-          var leftDifference = -(left - endLeft);
-          var topDifference = -(top - endTop) + window.scrollY;
-          console.log('END: ' +endLeft+'-'+ endTop);
-					// var topDifference  = 0;
-					console.log('坐标差：'+leftDifference+' - '+ topDifference);
-					console.log('--------------------');
-          // 开始
-          childElement.classList.remove('point-pre');
-          setTimeout(function() {
-            childElement.getElementsByClassName('inner')[0].style.transform =
-              `translateY(${topDifference}px)`;
-            childElement.getElementsByClassName('inner')[0].style.backgroundImage="url(" + pic + ")";
-            childElement.style.transform = `translateX(${leftDifference}px)`;
+      joinShopCar: function(item, event) {
+        if (this.islogin) {
+          this._addThing(item.id, item.price, item.name, item.pic);
+          // 当双击的时候,小球会从(0,0)的位置落入目标区,以下为当双击的时候,只会第一次点击的setTimeout会被清除
+          // 所以只会显示一次从点击地点到目标区的运动
+          // 但是依然会执行第一次的逻辑,因为内部两个setTimeout没有被清除
+          var that = this;
+          clearTimeout(timer);
+          var timer = setTimeout(function() {
+            var left = event.pageX;
+            var top = event.pageY;
+            // 定位球元素
+            var childElement = that.getElementMyShowHide(outerWrapper, 'point-pre');
+            childElement.style.left = left + 'px';
+            childElement.style.top = top + 'px';
+            // 计算坐标差
+            var leftDifference = -(left - endLeft);
+            var topDifference = -(top - endTop) + window.scrollY;
+            // 开始
+            childElement.classList.remove('point-pre');
             setTimeout(function() {
-              childElement.getElementsByClassName('inner')[0].setAttribute('style', '');
-              childElement.setAttribute('style', '');
-              childElement.classList.add('point-pre');
-            }, 350);
-          }, 1);
-        }, 30);
+              childElement.getElementsByClassName('inner')[0].style.transform =
+                `translateY(${topDifference}px)`;
+              childElement.getElementsByClassName('inner')[0].style.backgroundImage = "url(" + item.pic + ")";
+              childElement.style.transform = `translateX(${leftDifference}px)`;
+              setTimeout(function() {
+                childElement.getElementsByClassName('inner')[0].setAttribute('style', '');
+                childElement.setAttribute('style', '');
+                childElement.classList.add('point-pre');
+              }, 300);
+            }, 100);
+          }, 30);
+        } else {
+          this.$confirm('当前无法添加购物车，请先登录', '登录提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            // this.$router.push({
+            //   path: '/login'
+            // });
+            this.$router.push({ path:'/login' , query:{ redirect: this.$route.fullPath} })
+          });
+        }
       }
     }
   }
@@ -271,7 +280,7 @@
     width: 100px;
     height: 100px;
     position: fixed;
-    right: -30px;
+    right: -50px;
     top: 40px;
   }
   .outer {
@@ -287,11 +296,11 @@
     width: 30px;
     height: 30px;
     border-radius: 50%;
-   	transition: all .35s cubic-bezier(0,0,.58,1);
+    transition: all .35s cubic-bezier(0, 0, .58, 1);
     position: absolute;
     z-index: 999;
     /* background: url("http://dummyimage.com/234x60"); */
-     /* background: url(../assets/local/background.jpg) no-repeat; */
+    /* background: url(../assets/local/background.jpg) no-repeat; */
   }
   .outer.point-pre {
     display: none;
