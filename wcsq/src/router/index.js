@@ -7,6 +7,7 @@ import WcBbs from '@/page/bbs'
 import WcSale from '@/page/sale'
 import WcCenter from '@/page/center'
 import SaleDetail from '@/page/saleDetail'
+import ShopCar from '@/page/shopCarOrder'
 Vue.use(Router)
 
 export default new Router({
@@ -45,6 +46,11 @@ export default new Router({
       path: '/goods',
       name: 'SaleDetail',
       component: SaleDetail
+    },
+    {
+      path: '/shopcar',
+      name: 'ShopCar',
+      component: ShopCar
     }
 
   ]

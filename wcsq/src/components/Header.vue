@@ -24,7 +24,9 @@
                 <el-dropdown-menu slot="dropdown" class="user-drop">
                   <el-dropdown-item>
                     <el-badge :value="shopcar.count">
-                     <p>我的购物车</p>
+                      <p>
+                        <router-link to='/shopcar'>我的购物车</router-link>
+                      </p>
                     </el-badge>
                   </el-dropdown-item>
                   <el-dropdown-item>
@@ -79,7 +81,8 @@
     getStore
   } from '../utils/utils'
   import {
-    mapState
+    mapState,
+    mapMutations
   } from 'vuex'
   import API from '../api/API'
   const api = new API();
@@ -91,7 +94,7 @@
     },
     computed: {
       ...mapState([
-        'user', 'islogin','shopcar'
+        'user', 'islogin', 'shopcar'
       ])
     },
     created: function () {
@@ -115,6 +118,15 @@
             }
           }
         })
+        if (getStore('shopCar')) {
+          this.shopcar.shopcarList = JSON.parse(getStore('shopCar'));
+          let cart = this.shopcar.shopcarList;
+          let temp = 0;
+          cart.forEach(item => {
+            temp += item.productNum;
+          });
+          this.changeCount(temp);
+        }
       }
       Math.easeout = function (A, B, rate, callback) {
         if (A == B || typeof A != 'number') {
@@ -135,8 +147,16 @@
       };
     },
     methods: {
-      startLogin: function() {
-        this.$router.push({ path:'/login' , query:{ redirect: this.$route.fullPath}});
+      ...mapMutations([
+        'changeCount',
+      ]),
+      startLogin: function () {
+        this.$router.push({
+          path: '/login',
+          query: {
+            redirect: this.$route.fullPath
+          }
+        });
       },
       clearLogin: function () {
         this.$confirm('即将退出登录（需重新登录），是否继续？', '提示', {
@@ -145,6 +165,7 @@
           type: 'warning'
         }).then(() => {
           removeStore('data');
+          removeStore('shopCar');
           window.location.reload();
         });
       },
@@ -193,13 +214,13 @@
   }
 
   /* .user-drop {
-    top: 60px !important;
-    li {
-        padding: 0 30px;
-        color: #fff;
-        text-align: center;
-    }
-  } */
+      top: 60px !important;
+      li {
+          padding: 0 30px;
+          color: #fff;
+          text-align: center;
+      }
+    } */
 
   .user-drop li {
     padding: 0 30px;
@@ -283,13 +304,14 @@
     margin-right: 100px;
   }
 
-  .user-drop .el-badge__content.is-fixed{
+  .user-drop .el-badge__content.is-fixed {
     top: 2px;
   }
 
-  .user-drop .el-badge__content{
+  .user-drop .el-badge__content {
     font-size: 14px;
     height: 20px;
     line-height: 20px;
   }
+
 </style>

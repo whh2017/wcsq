@@ -290,6 +290,7 @@
     left: 0px;
     top: 0px;
     transition: all .35s linear;
+    -webkit-transition: all .35s linear;
     z-index: 999;
   }
   .outer .inner {
@@ -297,6 +298,7 @@
     height: 30px;
     border-radius: 50%;
     transition: all .35s cubic-bezier(0, 0, .58, 1);
+    -webkit-transition: all .35s cubic-bezier(0, 0, .58, 1);
     position: absolute;
     z-index: 999;
     /* background: url("http://dummyimage.com/234x60"); */

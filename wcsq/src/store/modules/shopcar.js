@@ -54,7 +54,10 @@ export default {
 
     },
     bb: function () {
-      alert("sj1b");
+      
+    },
+    changeCount: function(state, count) {
+      state.count = count;
     }
   }
 }

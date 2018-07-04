@@ -26,7 +26,7 @@ Vue.use(VueAreaLinkage)
 /* 路由卫士 */
 router.beforeEach((to, from, next) => {
   let user = JSON.parse(getStore('data'));
-  if (!user && to.path == '/center') {
+  if (!user && ((to.path == '/center') || (to.path == '/shopcar')) ){
     next({ path:'/login' , query:{ redirect: to.fullPath} })
   } else {
     next()
